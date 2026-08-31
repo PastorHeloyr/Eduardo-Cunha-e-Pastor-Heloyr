@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Artes | Eduardo Cunha e Pastor Heloyr</title>
+
+<style>
+:root{
+    --azul:#001532;
+    --laranja:#EE6400;
+    --fundo:#f5f2ec;
+    --branco:#ffffff;
+    --cinza:#d7dce2;
+    --texto:#001532;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    background:var(--fundo);
+    color:var(--texto);
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{overflow-x:hidden}
+
+button,input{font:inherit}
+
+a{text-decoration:none;color:inherit}
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.site-header{
+    height:74px;
+    background:linear-gradient(90deg, var(--azul) 0%, var(--azul) 28%, var(--laranja) 100%);
+    border-bottom:3px solid rgba(255,255,255,.28);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 42px;
+    color:#fff;
+}
+
+.marca{
+    font-size:18px;
+    line-height:.86;
+    font-weight:900;
+    letter-spacing:-.5px;
+}
+
+.marca span{display:block}
+
+.header-numero{
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:1px;
+}
+
+/* IMAGENS DO CABEÇALHO E RODAPÉ */
+.imagem-nome{
+    display:block;
+    width:auto;
+    max-width:260px;
+    max-height:48px;
+    object-fit:contain;
+}
+
+.imagem-numero{
+    display:block;
+    width:auto;
+    max-width:150px;
+    max-height:42px;
+    object-fit:contain;
+}
+
+.imagem-nome-footer{
+    display:block;
+    width:auto;
+    max-width:260px;
+    max-height:75px;
+    margin:0 auto;
+    object-fit:contain;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    width:min(720px,92%);
+    margin:70px auto 0;
+}
+
+.hero-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.kicker{
+    color:var(--laranja);
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.contador{
+    color:var(--laranja);
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.hero h1{
+    margin:0;
+    font-size:58px;
+    line-height:.9;
+    letter-spacing:-3px;
+    font-weight:900;
+}
+
+.hero h1 span{
+    display:block;
+    color:var(--laranja);
+}
+
+.hero p{
+    max-width:480px;
+    margin:18px 0 0;
+    color:#687383;
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* =========================
+   ETAPAS
+========================= */
+
+.etapas{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-top:28px;
+}
+
+.etapa{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#9aa3ad;
+    font-size:10px;
+    font-weight:800;
+}
+
+.etapa.ativa{color:var(--laranja)}
+
+.etapa i{
+    display:block;
+    width:45px;
+    height:1px;
+    background:#ccd2d8;
+}
+
+/* =========================
+   GERADOR
+========================= */
+
+.gerador{
+    width:min(720px,92%);
+    margin:62px auto 90px;
+}
+
+.titulo-secao{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-bottom:18px;
+}
+
+.titulo-secao small{
+    color:var(--laranja);
+    font-size:10px;
+    font-weight:900;
+}
+
+.titulo-secao h2{
+    margin:0;
+    font-size:20px;
+    letter-spacing:-.4px;
+}
+
+/* botões Story / Perfil */
+
+.formatos{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.formato{
+    min-height:86px;
+    border:1px solid #cbd2da;
+    background:#fff;
+    color:#fff;
+    background:var(--azul);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:18px 22px;
+    text-align:left;
+    transition:.2s ease;
+}
+
+.formato:hover,
+.formato.selecionado{
+    color:var(--laranja);
+    border-color:var(--laranja);
+}
+
+.formato-icone{
+    width:35px;
+    height:45px;
+    border:1px solid currentColor;
+    flex:none;
+}
+
+.formato.perfil .formato-icone{
+    width:35px;
+    height:35px;
+}
+
+.formato strong{
+    display:block;
+    font-size:15px;
+    letter-spacing:.5px;
+}
+
+.formato small{
+    display:block;
+    margin-top:6px;
+    opacity:.65;
+    font-size:9px;
+}
+
+/* =========================
+   GAVETA
+========================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    background:rgba(0,21,50,.62);
+    opacity:0;
+    visibility:hidden;
+    transition:.25s;
+}
+
+.overlay.aberto{
+    opacity:1;
+    visibility:visible;
+}
+
+.gaveta{
+    position:fixed;
+    left:50%;
+    bottom:0;
+    z-index:1001;
+    width:min(780px,100%);
+    max-height:90vh;
+    overflow:auto;
+    padding:28px;
+    background:var(--fundo);
+    border-top:3px solid var(--laranja);
+    transform:translate(-50%,110%);
+    transition:transform .3s ease;
+}
+
+.gaveta.aberta{
+    transform:translate(-50%,0);
+}
+
+.fechar{
+    position:absolute;
+    top:8px;
+    right:13px;
+    width:42px;
+    height:42px;
+    border:0;
+    background:transparent;
+    color:var(--azul);
+    font-size:32px;
+    cursor:pointer;
+}
+
+.gaveta h2{
+    margin:0 0 20px;
+    font-size:22px;
+}
+
+/* =========================
+   ARTES
+========================= */
+
+.artes{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.arte{
+    position:relative;
+    padding:5px;
+    border:2px solid #ccd2d8;
+    background:#fff;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.arte:hover{
+    border-color:var(--laranja);
+}
+
+.arte.selecionada{
+    border-color:var(--laranja);
+    box-shadow:0 0 0 2px rgba(238,100,0,.12);
+}
+
+.arte img{
+    width:100%;
+    height:300px;
+    display:block;
+    object-fit:contain;
+    background:#e9e7e2;
+}
+
+.arte-numero{
+    position:absolute;
+    left:9px;
+    top:9px;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:var(--azul);
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:11px;
+    font-weight:900;
+}
+
+.arte.selecionada .arte-numero{
+    background:var(--laranja);
+}
+
+.continuar{
+    width:100%;
+    height:52px;
+    margin-top:18px;
+    border:0;
+    background:var(--azul);
+    color:#fff;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.continuar:hover:not(:disabled){
+    color:var(--laranja);
+}
+
+.continuar:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+/* =========================
+   EDITOR
+========================= */
+
+.editor{
+    position:fixed;
+    inset:0;
+    z-index:2000;
+    overflow:auto;
+    padding:25px 18px 50px;
+    background:var(--fundo);
+    transform:translateX(110%);
+    transition:transform .3s ease;
+}
+
+.editor.aberto{
+    transform:translateX(0);
+}
+
+.editor-inner{
+    width:min(650px,100%);
+    margin:auto;
+}
+
+.editor h2{
+    margin:25px 0 18px;
+    font-size:24px;
+}
+
+.area{
+    position:relative;
+    width:100%;
+    background:#ddd;
+    overflow:hidden;
+}
+
+#canvas{
+    display:block;
+    width:100%;
+    height:auto;
+    touch-action:none;
+    cursor:grab;
+}
+
+#canvas:active{cursor:grabbing}
+
+.upload{
+    width:100%;
+    height:52px;
+    margin-top:16px;
+    border:0;
+    background:var(--azul);
+    color:#fff;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.upload:hover{color:var(--laranja)}
+
+.controles{
+    margin-top:15px;
+    padding:12px;
+    border:1px solid var(--cinza);
+    background:#fff;
+    text-align:center;
+    display:none;
+}
+
+.controles.visivel{display:block}
+
+.controles button{
+    width:44px;
+    height:38px;
+    margin:3px;
+    border:1px solid #ccd2d8;
+    background:#fff;
+    color:var(--azul);
+    cursor:pointer;
+}
+
+.controles button:hover{
+    border-color:var(--laranja);
+    color:var(--laranja);
+}
+
+.zoom{
+    display:inline-block;
+    min-width:65px;
+    font-size:12px;
+    font-weight:900;
+}
+
+.status{
+    min-height:24px;
+    padding:8px 0;
+    text-align:center;
+    font-size:12px;
+    color:#687383;
+}
+
+.download{
+    width:100%;
+    height:54px;
+    border:0;
+    background:var(--laranja);
+    color:#fff;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.download:hover{background:var(--azul)}
+
+.download:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+}
+
+/* =========================
+   RODAPÉ
+========================= */
+
+.footer{
+    background:linear-gradient(90deg, var(--azul) 0%, var(--azul) 28%, var(--laranja) 100%);
+    color:#fff;
+    padding:34px 32px 24px;
+}
+
+.footer-conteudo{
+    width:min(1100px,100%);
+    margin:0 auto 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+}
+
+.footer-imagem{
+    display:block;
+    width:auto;
+    object-fit:contain;
+}
+
+.footer-nome{
+    max-width:280px;
+    max-height:72px;
+}
+
+.footer-numero{
+    max-width:180px;
+    max-height:58px;
+}
+
+.aviso-eleitoral{
+    width:min(1100px,100%);
+    margin:0 auto;
+    padding-top:18px;
+    border-top:1px solid rgba(255,255,255,.28);
+    font-size:11px;
+    line-height:1.55;
+    color:#fff;
+    text-align:center;
+    font-weight:800;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:650px){
+
+    .imagem-nome{
+        max-width:180px;
+        max-height:38px;
+    }
+
+    .imagem-numero{
+        max-width:105px;
+        max-height:34px;
+    }
+
+    .footer{
+        padding:28px 18px 22px;
+    }
+
+    .footer-conteudo{
+        gap:14px;
+    }
+
+    .footer-nome{
+        max-width:180px;
+        max-height:52px;
+    }
+
+    .footer-numero{
+        max-width:110px;
+        max-height:42px;
+    }
+
+
+    .site-header{
+        height:62px;
+        padding:0 18px;
+    }
+
+    .marca{font-size:15px}
+
+    .header-numero{font-size:9px}
+
+    .hero{
+        margin-top:42px;
+    }
+
+    .hero h1{
+        font-size:42px;
+        letter-spacing:-2px;
+    }
+
+    .formatos{
+        grid-template-columns:1fr;
+    }
+
+    .artes{
+        grid-template-columns:1fr 1fr 1fr;
+        gap:7px;
+    }
+
+    .arte img{
+        height:180px;
+    }
+
+    .gaveta{
+        padding:22px 14px;
+    }
+
+    .editor{
+        padding:18px 12px 40px;
+    }
+}
+
+@media(max-width:420px){
+
+    .footer-conteudo{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .footer-nome,
+    .footer-numero{
+        max-width:210px;
+    }
+
+    .aviso-eleitoral{
+        font-size:10px;
+    }
+
+    .hero h1{
+        font-size:36px;
+    }
+
+    .artes{
+        grid-template-columns:1fr;
+    }
+
+    .arte img{
+        height:300px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="marca">
+        <img
+            src="imagens/nome.png"
+            alt="Nome"
+            class="imagem-nome"
+        >
+    </div>
+
+    <div class="header-numero">
+        <img
+            src="imagens/numero.png"
+            alt="Número"
+            class="imagem-numero"
+        >
+    </div>
+</header>
+
+
+<section class="hero">
+
+    <div class="hero-top">
+        <div class="kicker">EDITOR OFICIAL</div>
+        <div class="contador">01—05</div>
+    </div>
+
+    <h1>
+        Crie sua arte
+        <span>do Eduardo Cunha e Pastor Heloyr.</span>
+    </h1>
+
+    <p>
+        Coloque sua foto em um dos modelos oficiais,
+        ajuste o enquadramento e baixe.
+    </p>
+
+    <div class="etapas">
+        <div class="etapa ativa">01<i></i></div>
+        <div class="etapa">02<i></i></div>
+        <div class="etapa">03<i></i></div>
+        <div class="etapa">04<i></i></div>
+        <div class="etapa">05</div>
+    </div>
+
+</section>
+
+
+<section class="gerador">
+
+    <div class="titulo-secao">
+        <small>01</small>
+        <h2>Escolha o formato</h2>
+    </div>
+
+    <div class="formatos">
+
+        <button class="formato perfil" data-formato="perfil">
+            <span class="formato-icone"></span>
+            <span>
+                <strong>PERFIL</strong>
+                <small>1080 × 1080 · publicação quadrada</small>
+            </span>
+        </button>
+
+        <button class="formato" data-formato="story">
+            <span class="formato-icone"></span>
+            <span>
+                <strong>STORY</strong>
+                <small>1080 × 1920 · tela vertical</small>
+            </span>
+        </button>
+
+    </div>
+
+</section>
+
+
+<div class="overlay" id="overlay"></div>
+
+
+<section class="gaveta" id="gaveta">
+
+    <button class="fechar" id="fecharGaveta">×</button>
+
+    <h2>Escolha sua arte</h2>
+
+    <div class="artes" id="artes"></div>
+
+    <button class="continuar" id="continuar" disabled>
+        CONTINUAR
+    </button>
+
+</section>
+
+
+<section class="editor" id="editor">
+
+    <button class="fechar" id="fecharEditor">×</button>
+
+    <div class="editor-inner">
+
+        <h2>Ajuste sua foto</h2>
+
+        <div class="area">
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <input
+            type="file"
+            id="arquivo"
+            accept="image/*"
+            hidden
+        >
+
+        <button class="upload" id="upload">
+            COLOCAR MINHA FOTO
+        </button>
+
+        <div class="controles" id="controles">
+
+            <button id="menos">−</button>
+
+            <span class="zoom" id="zoom">100%</span>
+
+            <button id="mais">+</button>
+
+            <br>
+
+            <button data-mover="cima">↑</button>
+            <button data-mover="esquerda">←</button>
+            <button data-mover="baixo">↓</button>
+            <button data-mover="direita">→</button>
+
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <button class="download" id="download" disabled>
+            DOWNLOAD
+        </button>
+
+    </div>
+
+</section>
+
+
+<footer class="footer">
+
+    <div class="footer-conteudo">
+
+        <img
+            src="imagens/nome.png"
+            alt="Nome"
+            class="footer-imagem footer-nome"
+        >
+
+        <img
+            src="imagens/numero.png"
+            alt="Número"
+            class="footer-imagem footer-numero"
+        >
+
+    </div>
+
+    <div class="aviso-eleitoral">
+        <strong>CNPJ EDUARDO CUNHA: 68.403.926/0001-61 &nbsp;&nbsp; CNPJ PASTOR HELOYR: 68.269.123/0001-66</strong>
+    </div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   ARTES LOCAIS
+   Coloque estes 4 arquivos dentro da pasta "imagens":
+   Perfil 1.png
+   Perfil 2.png
+   Story 1.png
+   Story 2.png
+========================================================= */
+
+const imagens = {
+
+    perfil: [
+        "imagens/Perfil 1.png",
+        "imagens/Perfil 2.png"
+    ],
+
+    story: [
+        "imagens/Story 1.png",
+        "imagens/Story 2.png"
+    ]
+
+};
+
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const overlay = document.getElementById("overlay");
+const gaveta = document.getElementById("gaveta");
+const artesEl = document.getElementById("artes");
+const continuar = document.getElementById("continuar");
+
+const editor = document.getElementById("editor");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const arquivo = document.getElementById("arquivo");
+const upload = document.getElementById("upload");
+const controles = document.getElementById("controles");
+const download = document.getElementById("download");
+
+const statusEl = document.getElementById("status");
+const zoomEl = document.getElementById("zoom");
+
+
+/* =========================================================
+   ESTADO
+========================================================= */
+
+let formatoAtual = null;
+let arteAtual = null;
+let arteCarregada = null;
+let fotoUsuario = null;
+
+let escala = 1;
+let posX = 0;
+let posY = 0;
+
+let arrastando = false;
+let inicioX = 0;
+let inicioY = 0;
+let origemX = 0;
+let origemY = 0;
+
+
+/* =========================================================
+   STORY / PERFIL
+========================================================= */
+
+document.querySelectorAll(".formato").forEach(botao => {
+
+    botao.addEventListener("click", () => {
+
+        document
+            .querySelectorAll(".formato")
+            .forEach(b => b.classList.remove("selecionado"));
+
+        botao.classList.add("selecionado");
+
+        formatoAtual = botao.dataset.formato;
+        arteAtual = null;
+        arteCarregada = null;
+
+        continuar.disabled = true;
+
+        mostrarArtes();
+
+        overlay.classList.add("aberto");
+        gaveta.classList.add("aberta");
+
+    });
+
+});
+
+
+/* =========================================================
+   MOSTRAR ARTES
+========================================================= */
+
+function mostrarArtes(){
+
+    artesEl.innerHTML = "";
+
+    imagens[formatoAtual].forEach((url,index) => {
+
+        const item = document.createElement("div");
+        item.className = "arte";
+
+        const numero = document.createElement("span");
+        numero.className = "arte-numero";
+        numero.textContent = index + 1;
+
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = "Arte " + (index + 1);
+        img.draggable = false;
+
+        img.onerror = () => {
+            img.alt = "Imagem não encontrada: " + url;
+        };
+
+        item.appendChild(numero);
+        item.appendChild(img);
+
+        item.addEventListener("click", () => {
+
+            document
+                .querySelectorAll(".arte")
+                .forEach(a => a.classList.remove("selecionada"));
+
+            item.classList.add("selecionada");
+
+            arteAtual = {
+                url: url
+            };
+
+            continuar.disabled = false;
+
+            statusEl.textContent = "Arte selecionada.";
+
+        });
+
+        artesEl.appendChild(item);
+
+    });
+
+}
+
+
+/* =========================================================
+   FECHAR GAVETA
+========================================================= */
+
+function fecharGaveta(){
+
+    gaveta.classList.remove("aberta");
+    overlay.classList.remove("aberto");
+
+}
+
+document
+    .getElementById("fecharGaveta")
+    .addEventListener("click",fecharGaveta);
+
+overlay.addEventListener("click",fecharGaveta);
+
+
+/* =========================================================
+   CONTINUAR PARA O EDITOR
+========================================================= */
+
+continuar.addEventListener("click", async () => {
+
+    if(!arteAtual){
+        return;
+    }
+
+    fecharGaveta();
+
+    if(formatoAtual === "story"){
+        canvas.width = 1080;
+        canvas.height = 1920;
+    }else{
+        canvas.width = 1080;
+        canvas.height = 1080;
+    }
+
+    resetar();
+
+    editor.classList.add("aberto");
+
+    statusEl.textContent = "Carregando arte...";
+
+    try{
+
+        arteCarregada = await carregarImagem(arteAtual.url);
+
+        statusEl.textContent =
+            "Agora coloque sua foto.";
+
+        desenhar();
+
+    }catch(error){
+
+        console.error(error);
+
+        statusEl.textContent =
+            "A arte não foi encontrada. Verifique se o arquivo está na pasta imagens com o nome correto.";
+
+        desenhar();
+
+    }
+
+});
+
+
+/* =========================================================
+   FECHAR EDITOR
+========================================================= */
+
+document
+    .getElementById("fecharEditor")
+    .addEventListener("click",() => {
+
+        editor.classList.remove("aberto");
+
+    });
+
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+upload.addEventListener("click",() => {
+
+    arquivo.click();
+
+});
+
+
+arquivo.addEventListener("change",event => {
+
+    const file = event.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+    const url = URL.createObjectURL(file);
+
+    const img = new Image();
+
+    img.onload = () => {
+
+        fotoUsuario = img;
+
+        resetar();
+
+        controles.classList.add("visivel");
+
+        download.disabled = false;
+
+        statusEl.textContent =
+            "Arraste sua foto para ajustar o enquadramento.";
+
+        desenhar();
+
+    };
+
+    img.src = url;
+
+});
+
+
+/* =========================================================
+   CARREGAMENTO DAS ARTES LOCAIS
+========================================================= */
+
+function carregarImagem(url){
+
+    return new Promise((resolve,reject) => {
+
+        const img = new Image();
+
+        img.onload = () => resolve(img);
+
+        img.onerror = () =>
+            reject(new Error("Falha ao carregar imagem: " + url));
+
+        img.src = url;
+
+    });
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetar(){
+
+    escala = 1;
+    posX = 0;
+    posY = 0;
+
+    atualizarZoom();
+
+}
+
+
+/* =========================================================
+   DESENHAR
+========================================================= */
+
+function desenhar(){
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.fillStyle = "#ffffff";
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    /* FOTO DO USUÁRIO */
+
+    if(fotoUsuario){
+
+        const proporcaoFoto =
+            fotoUsuario.width / fotoUsuario.height;
+
+        const proporcaoCanvas =
+            canvas.width / canvas.height;
+
+        let largura;
+        let altura;
+
+        if(proporcaoFoto > proporcaoCanvas){
+
+            altura =
+                canvas.height * escala;
+
+            largura =
+                altura * proporcaoFoto;
+
+        }else{
+
+            largura =
+                canvas.width * escala;
+
+            altura =
+                largura / proporcaoFoto;
+
+        }
+
+        const x =
+            (canvas.width - largura) / 2 + posX;
+
+        const y =
+            (canvas.height - altura) / 2 + posY;
+
+        ctx.drawImage(
+            fotoUsuario,
+            x,
+            y,
+            largura,
+            altura
+        );
+
+    }
+
+
+    /* ARTE FIXA POR CIMA */
+
+    if(arteCarregada){
+
+        ctx.drawImage(
+            arteCarregada,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ZOOM
+========================================================= */
+
+document
+    .getElementById("mais")
+    .addEventListener("click",() => {
+
+        escala = Math.min(4,escala + .1);
+
+        atualizarZoom();
+        desenhar();
+
+    });
+
+
+document
+    .getElementById("menos")
+    .addEventListener("click",() => {
+
+        escala = Math.max(.3,escala - .1);
+
+        atualizarZoom();
+        desenhar();
+
+    });
+
+
+function atualizarZoom(){
+
+    zoomEl.textContent =
+        Math.round(escala * 100) + "%";
+
+}
+
+
+/* =========================================================
+   SETAS
+========================================================= */
+
+document
+    .querySelectorAll("[data-mover]")
+    .forEach(botao => {
+
+        botao.addEventListener("click",() => {
+
+            const distancia = 30;
+
+            switch(botao.dataset.mover){
+
+                case "cima":
+                    posY -= distancia;
+                    break;
+
+                case "baixo":
+                    posY += distancia;
+                    break;
+
+                case "esquerda":
+                    posX -= distancia;
+                    break;
+
+                case "direita":
+                    posX += distancia;
+                    break;
+
+            }
+
+            desenhar();
+
+        });
+
+    });
+
+
+/* =========================================================
+   ARRASTAR FOTO
+========================================================= */
+
+canvas.addEventListener("pointerdown",event => {
+
+    if(!fotoUsuario){
+        return;
+    }
+
+    arrastando = true;
+
+    canvas.setPointerCapture(event.pointerId);
+
+    const rect = canvas.getBoundingClientRect();
+
+    inicioX =
+        (event.clientX - rect.left) *
+        (canvas.width / rect.width);
+
+    inicioY =
+        (event.clientY - rect.top) *
+        (canvas.height / rect.height);
+
+    origemX = posX;
+    origemY = posY;
+
+});
+
+
+canvas.addEventListener("pointermove",event => {
+
+    if(!arrastando){
+        return;
+    }
+
+    const rect = canvas.getBoundingClientRect();
+
+    const atualX =
+        (event.clientX - rect.left) *
+        (canvas.width / rect.width);
+
+    const atualY =
+        (event.clientY - rect.top) *
+        (canvas.height / rect.height);
+
+    posX =
+        origemX + atualX - inicioX;
+
+    posY =
+        origemY + atualY - inicioY;
+
+    desenhar();
+
+});
+
+
+canvas.addEventListener("pointerup",() => {
+    arrastando = false;
+});
+
+canvas.addEventListener("pointercancel",() => {
+    arrastando = false;
+});
+
+
+/* =========================================================
+   DOWNLOAD
+========================================================= */
+
+download.addEventListener("click",async () => {
+
+    if(!fotoUsuario){
+        alert("Coloque sua foto primeiro.");
+        return;
+    }
+
+    if(!arteAtual){
+        alert("Selecione uma arte primeiro.");
+        return;
+    }
+
+    download.disabled = true;
+    download.textContent = "GERANDO...";
+
+    try{
+
+        /*
+         * Tenta carregar novamente se necessário.
+         */
+
+        if(!arteCarregada){
+
+            arteCarregada = await carregarImagem(arteAtual.url);
+
+        }
+
+        desenhar();
+
+        /*
+         * Como a moldura está no mesmo site, o Canvas pode
+         * gerar o PNG diretamente, sem Google Drive ou proxy.
+         */
+
+        canvas.toBlob(blob => {
+
+            if(!blob){
+                throw new Error("Não foi possível gerar o PNG.");
+            }
+
+            const url =
+                URL.createObjectURL(blob);
+
+            const link =
+                document.createElement("a");
+
+            link.href = url;
+
+            link.download =
+                formatoAtual === "story"
+                ? "pastor-heloyr-story.png"
+                : "pastor-heloyr-perfil.png";
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            link.remove();
+
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            },3000);
+
+            download.disabled = false;
+            download.textContent = "DOWNLOAD";
+
+            statusEl.textContent =
+                "Download iniciado.";
+
+        },"image/png");
+
+    }catch(error){
+
+        console.error(error);
+
+        download.disabled = false;
+        download.textContent = "DOWNLOAD";
+
+        statusEl.textContent =
+            "Não foi possível gerar o arquivo.";
+
+        alert(
+            "Não foi possível carregar a arte. Confira se o arquivo está dentro da pasta imagens e se o nome está exatamente igual."
+        );
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
